@@ -111,7 +111,7 @@ def save_aliases(aliases, file = "res/aliases.txt") -> str:
     """
     with open(file, "w") as f:
         for k, v in aliases.items():
-            f.write(f"{k}={v}\n")
+            f.write(f"{k}={v}")
 
 def apply_aliases(command, file = "res/aliases.txt") -> str:
     """
@@ -124,7 +124,7 @@ def apply_aliases(command, file = "res/aliases.txt") -> str:
     """
     aliases = obtain_aliases()
     for k, v in aliases.items():
-        command.replace(k, v)
+        command = command.replace(k, v)
     return command
 
 # Function to perform language translation
@@ -312,10 +312,11 @@ if __name__ == '__main__':
                 alias = command.split(" ")[1]
                 aliasing_target = command.split(" ")[-1]
                 if alias in aliases.keys():
-                    print("This word already binds to a command.")
+                    print("\033[36mThis word already binds to a command.")
                 else:
                     aliases[alias] = aliasing_target
                     save_aliases(aliases)
+                    print("\033[36mAlias apllied.")
 
             # WEB BASED
             # Open sites in browser
