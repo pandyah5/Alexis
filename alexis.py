@@ -338,7 +338,7 @@ if __name__ == '__main__':
                     webbrowser.open("https://amazon.com")
                 elif "google classroom" or "classroom" in command:
                     webbrowser.open("https://edu.google.com/intl/en-GB/workspace-for-education/classroom/")
-                elif "twitter" in command or "x" in command:
+                elif "twitter" in command or " x " in command:
                     webbrowser.open("https://twitter.com")
                 else:
                     webbrowser.open("https://" + command[5:])
