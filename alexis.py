@@ -86,14 +86,14 @@ def upperToCapitalize(txtAct):
     txtAct = (txtAct.lower()).capitalize()
     return txtAct
 
-def obtain_aliases(file = "ares/liases.txt") -> str:
+def obtain_aliases(file = "res/aliases.txt") -> str:
     """
     This function returns every saved command alias.
     Args:
         file (str, optional): The file where the aliases are stored. Defaults to "res/aliases.txt".
 
     Returns:
-        str: a list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
+        list:dict:str a list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
     """
     with open(file, "r") as f:
         lines = f.readlines()
@@ -338,7 +338,7 @@ if __name__ == '__main__':
                     webbrowser.open("https://amazon.com")
                 elif "google classroom" or "classroom" in command:
                     webbrowser.open("https://edu.google.com/intl/en-GB/workspace-for-education/classroom/")
-                elif "twitter" in command:
+                elif "twitter" in command or "x" in command:
                     webbrowser.open("https://twitter.com")
                 else:
                     webbrowser.open("https://" + command[5:])
