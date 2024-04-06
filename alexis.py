@@ -111,7 +111,7 @@ def save_aliases(aliases, file = "res/aliases.txt") -> str:
     """
     with open(file, "w") as f:
         for k, v in aliases.items():
-            f.write(f"{k}={v}")
+            f.write(f"{k}={v}\n")
 
 def apply_aliases(command, file = "res/aliases.txt") -> str:
     """
