@@ -202,7 +202,18 @@ if __name__ == '__main__':
             
             # ADD POSSIBLE USER COMMANDS HERE
             # GENERAL
-            if "hi" in command or "hey" in command or "hello" in command or "hai" in command:
+            if "alias" in command:
+                aliases = obtain_aliases()
+                alias = command.split(" ")[1]
+                aliasing_target = command.split(" ")[-1]
+                if alias in aliases.keys():
+                    print("\033[36mThis word already binds to a command.")
+                else:
+                    aliases[alias] = aliasing_target
+                    save_aliases(aliases)
+                    print("\033[36mAlias apllied.")
+            
+            elif "hi" in command or "hey" in command or "hello" in command or "hai" in command:
                 print(random.choice(resconst.helloResponse))
 
             elif "how are you" in command or "hows it going" in command or "how's it going" in command or "how r u" in command:
@@ -306,17 +317,6 @@ if __name__ == '__main__':
                     print(f"current time in {dispTimezone}: {dispTime}")
                 except pytz.UnknownTimeZoneError:
                     print("Can't find the place, try checking for typos or extra spaces")
-
-            elif "alias" in command:
-                aliases = obtain_aliases()
-                alias = command.split(" ")[1]
-                aliasing_target = command.split(" ")[-1]
-                if alias in aliases.keys():
-                    print("\033[36mThis word already binds to a command.")
-                else:
-                    aliases[alias] = aliasing_target
-                    save_aliases(aliases)
-                    print("\033[36mAlias apllied.")
 
             # WEB BASED
             # Open sites in browser
