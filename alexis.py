@@ -50,8 +50,8 @@ speechRecog = False
 
 
 # Inputs
-agreeInput = ["yes", "y", "sure", "yep"]
-disagreeInput = ["no", "n", "nope"]
+agreeInput = ["yes", "y", "sure", "yep", "ok", "why not"]
+disagreeInput = ["no", "n", "nope", "rather not"]
 
 
 def greet() -> str:
@@ -85,6 +85,47 @@ def upperToCapitalize(txtAct):
         return txtAct
     txtAct = (txtAct.lower()).capitalize()
     return txtAct
+
+def obtain_aliases(file = "ares/liases.txt") -> str:
+    """
+    This function returns every saved command alias.
+    Args:
+        file (str, optional): The file where the aliases are stored. Defaults to "res/aliases.txt".
+
+    Returns:
+        str: a list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
+    """
+    with open(file, "r") as f:
+        lines = f.readlines()
+    returnDictionnary = {}
+    for line in lines:
+        returnDictionnary[line.split("=")[0]] = line.split("=")[1]
+    return returnDictionnary
+
+def save_aliases(aliases, file = "res/aliases.txt") -> str:
+    """
+    This subroutine saves command aliases.
+    Args:
+        aliases (list of dictionnaries): the aliases to be stored
+        file (str, optional): The file where the aliases are to be stored. Defaults to "res/aliases.txt".
+    """
+    with open(file, "w") as f:
+        for k, v in aliases.items():
+            f.write(f"{k}={v}")
+
+def apply_aliases(command, file = "res/aliases.txt") -> str:
+    """
+    This function returns the command passed as an argument with all aliases apllied
+    Args:
+        command (str): The user command to aplly aliases to.
+        file (str, optional): The file in which the alliases are stored. Defaults to "res/aliases.txt".
+    Returns:
+        str: The command with all aliasess apllied
+    """
+    aliases = obtain_aliases()
+    for k, v in aliases.items():
+        command.replace(k, v)
+    return command
 
 # Function to perform language translation
 def translate_text(text, target_language='en'):
@@ -156,6 +197,9 @@ if __name__ == '__main__':
             # Take input from user in yellow color
             command = input("\033[33m").lower()
 
+            # Apllies aliases
+            command = apply_aliases(command)
+            
             # ADD POSSIBLE USER COMMANDS HERE
             # GENERAL
             if "hi" in command or "hey" in command or "hello" in command or "hai" in command:
@@ -263,6 +307,16 @@ if __name__ == '__main__':
                 except pytz.UnknownTimeZoneError:
                     print("Can't find the place, try checking for typos or extra spaces")
 
+            elif "alias" in command:
+                aliases = obtain_aliases()
+                alias = command.split(" ")[1]
+                aliasing_target = command.split(" ")[-1]
+                if alias in aliases.keys():
+                    print("This word already binds to a command.")
+                else:
+                    aliases[alias] = aliasing_target
+                    save_aliases(aliases)
+
             # WEB BASED
             # Open sites in browser
             elif "open " in command:
@@ -276,15 +330,15 @@ if __name__ == '__main__':
                     webbrowser.open("https://spotify.com")
                 elif "github" or "gh" in command:
                     webbrowser.open("https://github.com")
-                elif gmail in command:
+                elif "gmail" in command:
                     webbrowser.open("https://mail.google.com/")
-                elif netflix in command:
+                elif "netflix" in command:
                     webbrowser.open("https://netflix.com")
-                elif amazon in command:
+                elif "amazon" in command:
                     webbrowser.open("https://amazon.com")
                 elif "google classroom" or "classroom" in command:
                     webbrowser.open("https://edu.google.com/intl/en-GB/workspace-for-education/classroom/")
-                elif twitter in command:
+                elif "twitter" in command:
                     webbrowser.open("https://twitter.com")
                 else:
                     webbrowser.open("https://" + command[5:])
