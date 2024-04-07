@@ -61,20 +61,20 @@ def greet() -> str:
     """
     # Get the current time 
     hour = datetime.datetime.now().hour
-    greeting = "Hello, I am Alexis, your personal robot butler"
+    greeting = "\033[36m\nHello, I am Alexis, your personal robot butler."
 
     # "\033[36m" shows the string in Cyan in the terminal
     # 12am to 11:59am
     if hour >= 0 and hour < 12 :
-        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler "
+        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler."
 
     # 12pm to 5:59pm 
     if hour >= 12 and hour < 18:
-        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler "
+        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler."
 
     # 6pm to 11:59pm 
     if hour >= 18 and hour != 0:
-        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler "  
+        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler."  
     
     return greeting
 
@@ -93,7 +93,7 @@ def obtain_aliases(file = "res/aliases.txt") -> str:
         file (str, optional): The file where the aliases are stored. Defaults to "res/aliases.txt".
 
     Returns:
-        list:dict:str a list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
+        list:dict:str A list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
     """
     with open(file, "r") as f:
         lines = f.readlines()
@@ -125,7 +125,33 @@ def apply_aliases(command, file = "res/aliases.txt") -> str:
     aliases = obtain_aliases()
     for k, v in aliases.items():
         command = command.replace(k, v)
-    return command
+    return command 
+
+def get_setting(setting: str, file = "res/settings.txt") -> str:
+    """
+    This function obtains a specific setting's value from the specified file.
+    Args:
+        setting (str): The seting you are looking for the value of.
+        file (str, optional): Settings file to consult (relative filepath as string required). Defaults to "res/setings.txt".
+
+    Returns:
+        str: The value of the queried setting.
+    """
+    with open(file, "r") as f:
+        settings = f.readlines()
+    for line in settings:
+        if line.split("=")[0] == setting.upper():
+            return line.split("=")[1].strip("\n")
+    return None
+
+def set_background_color(settingsFile = "res/settings.txt") -> str:
+    backgroundColor = "\033[1;32;40m"
+    colorMode = get_setting("COLORMODE", settingsFile)
+    if colorMode == "dark":
+        backgroundColor = "\033[1;32;40m"
+    elif colorMode == "light":
+        backgroundColor = "\033[1;32;255m"
+    return backgroundColor
 
 # Function to perform language translation
 def translate_text(text, target_language='en'):
@@ -139,7 +165,7 @@ def print_available_languages():
     for code, language in LANGUAGES.items():
         print(f"{code}: {language}")
 
-api_key = '102ebf59c0124b54a9c2e239549bf2a3'
+news_api_key = '102ebf59c0124b54a9c2e239549bf2a3'
 
 def get_latest_news(api_key, country='us', category='general'):
    base_url = "https://newsapi.org/v2/top-headlines"
@@ -161,6 +187,8 @@ if __name__ == '__main__':
     # This prints one of the above three greetings before taking user input
     print(greet())
 
+    backgroundColor = set_background_color()
+        
     while not finished:
         while speechRecog:
             with sr.Microphone() as source:
@@ -170,7 +198,7 @@ if __name__ == '__main__':
                 r2 = sr.Recognizer()
 
                 # This will prompt user for speech input in green color and not go to the next line
-                print("\n\033[1;32;40mSpeak Command: ", end="")
+                print("\n{backgroundColor}Speak Command: ", end="")
 
                 # Try to get speech input from user
                 try:
@@ -183,17 +211,17 @@ if __name__ == '__main__':
 
                 except sr.UnknownValueError:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n\033[1;32;40mSpeech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print("\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
                 except sr.RequestError as e:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n\033[1;32;40mSpeech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print("\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
         # This is the default setting - typing commands
         # This is for when voice commands are disabled
         while not speechRecog:
             # This will prompt user for text input in green color and not go to the next line
-            print("\n\033[1;32;40mType Command: ", end="")
+            print(f"\n{backgroundColor}Type Command: ", end="")
             # Take input from user in yellow color
             command = input("\033[33m").lower()
 
@@ -228,8 +256,12 @@ if __name__ == '__main__':
             # Date and Time
             # Time
             elif "time" in command:
+                format = get_setting("HOUR_FORMAT")
                 time_now = datetime.datetime.now()
-                current_time = time_now.strftime("%H:%M")
+                if format == "12h":
+                    current_time = time_now.strftime("%I:%M %p")
+                else:
+                    current_time = time_now.strftime("%H:%M")
                 print("\033[36mIt's currently", current_time)
 
             # Date
@@ -240,7 +272,7 @@ if __name__ == '__main__':
 
             # News
             elif "news" in command:
-               news = get_latest_news(api_key)
+               news = get_latest_news(news_api_key)
                for article in news:
                    print(article['title'], "-", article['description'])
 
@@ -339,7 +371,7 @@ if __name__ == '__main__':
                     webbrowser.open("https://amazon.com")
                 elif "google classroom" or "classroom" in command:
                     webbrowser.open("https://edu.google.com/intl/en-GB/workspace-for-education/classroom/")
-                elif "twitter" in command or " x " in command:
+                elif "twitter" in command or command.endswith("x") or command.endswith("x."):
                     webbrowser.open("https://twitter.com")
                 else:
                     webbrowser.open("https://" + command[5:])

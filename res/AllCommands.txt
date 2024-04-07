@@ -40,7 +40,7 @@ WEBSITES
     netflix
     amazon
     google classroom
-    twitter
+    twitter/X
     google maps
 ------------------------------------------------------------------------------
 GAME
@@ -65,6 +65,14 @@ TRANSLATE
 ------------------------------------------------------------------------------
 USE SPEECH COMMANDS
 	speak
+------------------------------------------------------------------------------
+ALIAS
+    Replace some text in your commands by some other text!
+    For example: "alias Funny to joke" or "alias WhatsUp as news" or even "alias ciao exit"
+------------------------------------------------------------------------------
+IMPORTANT NOTES
+    Settings are available in "res/settings.txt"
+    Aliases can be manualy edited in "res/aliases.txt"
 ------------------------------------------------------------------------------
 EXIT
     bye/abort/exit
