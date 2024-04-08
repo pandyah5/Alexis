@@ -68,10 +68,22 @@ USE SPEECH COMMANDS
 ------------------------------------------------------------------------------
 ALIAS
     Replace some text in your commands by some other text!
-    For example: "alias Funny to joke" or "alias WhatsUp as news" or even "alias ciao exit"
+    For example: "alias Funny to joke" or "alias WhatsUp as to be understood as news" or even "alias ciao exit".
+------------------------------------------------------------------------------
+MACROS
+    Run some of your own custom code using "run"!
+    For example: "run launch vscode".
+    All macros ned to be written in python following a strict syntax.
+    This syntax is as follows:
+        <MACRO_NAME>
+        The macro's python code
+        </MACRO>
+    Example macros respecting the synax are available in "res/ExampleMacros.txt".
+    Example: run say hello
 ------------------------------------------------------------------------------
 IMPORTANT NOTES
-    Settings are available in "res/settings.txt"
+    Settings are available in "res/settings.txt".
+    A list of all available settings and their descriptions is available under "res/AllSettings.txt".
     Aliases can be manualy edited in "res/aliases.txt"
 ------------------------------------------------------------------------------
 EXIT

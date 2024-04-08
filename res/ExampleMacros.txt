@@ -1,0 +1,9 @@
+<Say hello>
+print("Hello, world")
+</MACRO>
+<Say world>
+print("World, world")
+</MACRO>
+<Say goodbye>
+print("Goodbye, world")
+</MACRO>

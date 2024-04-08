@@ -153,6 +153,41 @@ def set_background_color(settingsFile = "res/settings.txt") -> str:
         backgroundColor = "\033[1;32;255m"
     return backgroundColor
 
+def execute_user_macro(macroName: str, file = "res/macros.txt"):
+    """
+    This function executes a user-written macro as specified in the passed file.
+    Args:
+        macroName (str): The name of the macro to execute.
+        file (str, optional): The location of the macros file. Defaults to "res/macros.txt".
+
+    Returns:
+        any: The macro's return value if applicable
+    """
+    with open(file, "r") as f:
+        text = f.read().split("</MACRO>")
+    newMacroName = ""
+    for part in macroName:
+        newMacroName += (part + " ")
+    macroName = newMacroName[:-1].lower()
+    macros = {}
+    for code in text:
+        currentMacroName =""
+        currentMacroContent = ""
+        nameObtained = False
+        for char in code:
+            if char == ">":
+                nameObtained = True
+            elif char != "<" and not nameObtained:
+                currentMacroName += char
+            elif char != "<":
+                currentMacroContent += char
+        macros[currentMacroName.lower().strip("\n")] = currentMacroContent.strip("\n")
+    if macroName in macros.keys():
+
+        return exec(macros[macroName])
+    else:
+        return "Sorry, I don't seem to remember what this macro is."
+
 # Function to perform language translation
 def translate_text(text, target_language='en'):
     translator = Translator()
@@ -240,6 +275,13 @@ if __name__ == '__main__':
                     aliases[alias] = aliasing_target
                     save_aliases(aliases)
                     print("\033[36mAlias apllied.")
+            
+            elif "run" in command:
+                returnValue = f"\033[36m{execute_user_macro(command.split(' ')[1:])}"
+                if returnValue == "\033[36mNone":
+                    print("\033[36mDone with execution.")
+                else:
+                    print(returnValue)
             
             elif "hi" in command or "hey" in command or "hello" in command or "hai" in command:
                 print(random.choice(resconst.helloResponse))
