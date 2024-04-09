@@ -151,6 +151,14 @@ def set_background_color(settingsFile = "res/settings.txt") -> str:
         backgroundColor = "\033[1;32;40m"
     elif colorMode == "light":
         backgroundColor = "\033[1;32;255m"
+    elif colorMode == "purple":
+        backgroundColor = "\033[1;32;45m"
+    elif colorMode == "red":
+        backgroundColor = "\033[1;32;41m"
+    elif colorMode == "green":
+        backgroundColor = "\033[1;32;42m"
+    elif colorMode == "blue":
+        backgroundColor = "\033[1;32;44m"
     return backgroundColor
 
 def execute_user_macro(macroName: str, file = "res/macros.txt"):
