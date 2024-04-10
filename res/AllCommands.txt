@@ -69,6 +69,13 @@ USE SPEECH COMMANDS
 ALIAS
     Replace some text in your commands by some other text!
     For example: "alias Funny to joke" or "alias WhatsUp as to be understood as news" or even "alias ciao exit".
+
+DEALIAS
+    Remove aliases!
+    Syntaxe is: "dealias aliasTarget"
+    Example use:
+        alias funny joke
+        dealias joke
 ------------------------------------------------------------------------------
 MACROS
     Run some of your own custom code using "run"!

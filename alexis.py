@@ -273,7 +273,21 @@ if __name__ == '__main__':
             
             # ADD POSSIBLE USER COMMANDS HERE
             # GENERAL
-            if "alias" in command:
+            if "dealias" in command or "de-alias" in command:
+                aliases = obtain_aliases()
+                alias = command.split(" ")[1]
+                if alias not in aliases.values():
+                    print("\033[36mThis alias does not exist.")
+                else:
+                    newAliases = {}
+                    for k, v in aliases.items():
+                        if v == alias:
+                            continue
+                        else:
+                            newAliases[k] = v
+                    save_aliases(newAliases)
+                    print("\033[36mAlias removed successfuly.")
+            elif "alias" in command:
                 aliases = obtain_aliases()
                 alias = command.split(" ")[1]
                 aliasing_target = command.split(" ")[-1]
