@@ -82,11 +82,14 @@ MACROS
     For example: "run launch vscode".
     All macros ned to be written in python following a strict syntax.
     This syntax is as follows:
-        <MACRO_NAME>
+        <MACRO_NAME argument1 argument2>
         The macro's python code
         </MACRO>
+    Macro names canot conttain spaces
+    You can have as many arguments as you wish
+    Argument names must be in all lowercase
     Example macros respecting the synax are available in "res/ExampleMacros.txt".
-    Example: run say hello
+    Example: run saygoodbye marcos
 ------------------------------------------------------------------------------
 IMPORTANT NOTES
     Settings are available in "res/settings.txt".

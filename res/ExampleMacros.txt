@@ -1,9 +1,9 @@
-<Say hello>
+<Sayhello>
 print("Hello, world")
 </MACRO>
 <Say world>
 print("World, world")
 </MACRO>
-<Say goodbye>
-print("Goodbye, world")
+<Saygoodbye person>
+print(f"Goodbye, {person}")
 </MACRO>

@@ -161,7 +161,7 @@ def set_background_color(settingsFile = "res/settings.txt") -> str:
         backgroundColor = "\033[1;32;44m"
     return backgroundColor
 
-def execute_user_macro(macroName: str, file = "res/macros.txt"):
+def execute_user_macro(macroName: str, file = "res/ExampleMacros.txt"):
     """
     This function executes a user-written macro as specified in the passed file.
     Args:
@@ -171,6 +171,7 @@ def execute_user_macro(macroName: str, file = "res/macros.txt"):
     Returns:
         any: The macro's return value if applicable
     """
+    arguments = command.split()[2:]
     with open(file, "r") as f:
         text = f.read().split("</MACRO>")
     newMacroName = ""
@@ -189,10 +190,13 @@ def execute_user_macro(macroName: str, file = "res/macros.txt"):
                 currentMacroName += char
             elif char != "<":
                 currentMacroContent += char
-        macros[currentMacroName.lower().strip("\n")] = currentMacroContent.strip("\n")
+        macroHeaders = currentMacroName.lower().strip("\n").split(" ")
+        macros[macroHeaders[0]] = currentMacroContent.strip("\n"), macroHeaders[2:]
     if macroName in macros.keys():
-
-        return exec(macros[macroName])
+        macroArgs = {}
+        for argumentIndex in range(len(arguments)):
+            macroArgs[macros[macroName][1][argumentIndex]] = arguments[argumentIndex]
+        return exec(macros[macroName], macroArgs)
     else:
         return "Sorry, I don't seem to remember what this macro is."
 
