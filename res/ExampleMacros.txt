@@ -1,7 +1,7 @@
 <Sayhello>
 print("Hello, world")
 </MACRO>
-<Say world>
+<Sayworld>
 print("World, world")
 </MACRO>
 <Saygoodbye person>
