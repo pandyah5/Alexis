@@ -169,13 +169,16 @@ def execute_user_macro(macroNameAndArgs: str, file = "res/macros.txt"):
         file (str, optional): The location of the macros file. Defaults to "res/macros.txt".
 
     Returns:
-        any: The macro's return value if applicable
+        any: The macro's return value if applicable or a string error message
     """
     macroName = macroNameAndArgs[0]
     arguments = macroNameAndArgs[1:]
     with open(file, "r") as f:
         text = f.read().split("</MACRO>")
     macros = {}
+    
+    
+    # This large for loop tries to read the macros.txt file into macro names and arguments and macro code in a single dictionnary.
     for code in text:
         currentMacroName =""
         currentMacroContent = ""
@@ -187,9 +190,10 @@ def execute_user_macro(macroNameAndArgs: str, file = "res/macros.txt"):
                 currentMacroName += char
             elif char != "<":
                 currentMacroContent += char
-        macroHeaders = currentMacroName.lower().strip("\n").split(" ")
-        macros[macroHeaders[0]] = currentMacroContent.strip("\n"), macroHeaders[1:]
+        macroHeaders = currentMacroName.strip("\n").split(" ")
+        macros[macroHeaders[0].lower()] = currentMacroContent.strip("\n"), macroHeaders[1:]
     if macroName in macros.keys():
+        # This is the part that handles passing the arguments to the macro.
         macroArgs = {}
         for argumentIndex in range(len(arguments)):
             macroArgs[macros[macroName][1][argumentIndex]] = arguments[argumentIndex]

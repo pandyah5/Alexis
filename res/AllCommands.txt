@@ -87,7 +87,7 @@ MACROS
         </MACRO>
     Macro names canot conttain spaces
     You can have as many arguments as you wish
-    Argument names must be in all lowercase
+    Argument names must be in all lowercase and they will always be passed in lowercase: "Argument" will never be passed into a macro since it will be converted into "argument"
     Example macros respecting the synax are available in "res/ExampleMacros.txt".
     Example: run saygoodbye marcos
 ------------------------------------------------------------------------------
