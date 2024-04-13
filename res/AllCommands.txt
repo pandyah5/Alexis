@@ -80,7 +80,7 @@ DEALIAS
 MACROS
     Run some of your own custom code using "run"!
     For example: "run launch vscode".
-    All macros ned to be written in python following a strict syntax.
+    All macros need to be written in python following a strict syntax.
     This syntax is as follows:
         <MACRO_NAME argument1 argument2>
         The macro's python code
