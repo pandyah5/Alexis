@@ -1,4 +1,4 @@
 ALIASES_LOCATION= Filepath to aliases.txt: can be any valid and accessible filepath; Default is res/aliases.txt
 HOUR_FORMAT= Time format to be used by Alexis: 12h or 24h; Default is 24h
-COLORMODE=Choose a background colour: dark, light, purple, blue, red or green; Default is dark
+COLORMODE=Choose a background colour: dark, light, purple, blue, red or green; Default is dark (Only light and dark work perfectly, others not so well.)
 SPEECHRECOG=Choose wether or not to use vocal commands: true of false; Default is false
