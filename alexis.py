@@ -9,8 +9,6 @@ import pytube
 import random
 from html import unescape
 
-
-
 # For request errors
 import requests
 # For email
@@ -63,20 +61,20 @@ def greet() -> str:
     """
     # Get the current time 
     hour = datetime.datetime.now().hour
-    greeting = "\033[36m\nHello, I am Alexis, your personal robot butler."
+    greeting = "\033[36m\nHello, I am Alexis, your personal robot butler"
 
     # "\033[36m" shows the string in Cyan in the terminal
     # 12am to 11:59am
     if hour >= 0 and hour < 12 :
-        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler."
+        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler"
 
     # 12pm to 5:59pm 
     if hour >= 12 and hour < 18:
-        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler."
+        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler"
 
     # 6pm to 11:59pm 
     if hour >= 18 and hour != 0:
-        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler."  
+        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler"  
     
     return greeting
 
@@ -178,8 +176,6 @@ def execute_user_macro(macroNameAndArgs: str, file = "res/macros.txt"):
     with open(file, "r") as f:
         text = f.read().split("</MACRO>")
     macros = {}
-    
-    
     # This large for loop tries to read the macros.txt file into macro names and arguments and macro code in a single dictionnary.
     for code in text:
         currentMacroName =""
@@ -236,13 +232,10 @@ def get_latest_news(api_key, country='us', category='general'):
 if __name__ == '__main__':
     # This prints one of the above three greetings before taking user input
     print(greet())
-
     backgroundColor = set_background_color()
-        
     while not finished:
         while speechRecog:
             with sr.Microphone() as source:
-
                 # Recognisers for speech recognition
                 r1 = sr.Recognizer()
                 r2 = sr.Recognizer()
@@ -274,10 +267,8 @@ if __name__ == '__main__':
             print(f"\n{backgroundColor}Type Command: ", end="")
             # Take input from user in yellow color
             command = input("\033[33m").lower()
-
             # Apllies aliases
-            command = apply_aliases(command)
-            
+            command = apply_aliases(command)  
             # ADD POSSIBLE USER COMMANDS HERE
             # GENERAL
             if "dealias" in command or "de-alias" in command:
