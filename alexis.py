@@ -241,7 +241,7 @@ if __name__ == '__main__':
                 r2 = sr.Recognizer()
 
                 # This will prompt user for speech input in green color and not go to the next line
-                print("\n{backgroundColor}Speak Command: ", end="")
+                print(f"\n{backgroundColor}Speak Command: ", end="")
 
                 # Try to get speech input from user
                 try:
@@ -254,11 +254,11 @@ if __name__ == '__main__':
 
                 except sr.UnknownValueError:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print(f"\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
                 except sr.RequestError as e:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print(f"\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
         # This is the default setting - typing commands
         # This is for when voice commands are disabled
