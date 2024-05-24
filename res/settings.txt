@@ -1,0 +1,4 @@
+ALIASES_LOCATION=/res/aliases.txt
+HOUR_FORMAT=24h
+COLORMODE=dark
+SPEECHRECOG=false

@@ -3,7 +3,8 @@
 
 Alexis is an open source Personal Assistant that works on the command line.
 Right now, in its early stages of development, it can't do much except open websites, make use of Bored API, google something or pull something from Wikipedia.
-The final goal for Alexis is to do everything from sending emails to telling you a joke.
+The final goal for Alexis is to do everything from sending emails to telling you a joke. (He can now do both!)
+Alexis is outfited with a powerful macros and alias system as well as an intuitive settings system all accessible with only raw text to allow you to customise him to your liking.
 
 ## Get Started
 - Check out Alexis on YouTube - https://youtu.be/LchUl9pueLw

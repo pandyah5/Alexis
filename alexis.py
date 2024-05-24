@@ -50,8 +50,8 @@ speechRecog = False
 
 
 # Inputs
-agreeInput = ["yes", "y", "sure", "yep"]
-disagreeInput = ["no", "n", "nope"]
+agreeInput = ["yes", "y", "sure", "yep", "ok", "why not"]
+disagreeInput = ["no", "n", "nope", "rather not"]
 
 
 def greet() -> str:
@@ -61,20 +61,20 @@ def greet() -> str:
     """
     # Get the current time 
     hour = datetime.datetime.now().hour
-    greeting = "Hello, I am Alexis, your personal robot butler"
+    greeting = "\033[36m\nHello, I am Alexis, your personal robot butler"
 
     # "\033[36m" shows the string in Cyan in the terminal
     # 12am to 11:59am
     if hour >= 0 and hour < 12 :
-        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler "
+        greeting = "\033[36m\nGood Morning, I am Alexis, your personal robot butler"
 
     # 12pm to 5:59pm 
     if hour >= 12 and hour < 18:
-        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler "
+        greeting = "\033[36m\nGood Afternoon, I am Alexis, your personal robot butler"
 
     # 6pm to 11:59pm 
     if hour >= 18 and hour != 0:
-        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler "  
+        greeting = "\033[36m\nGood Evening, I am Alexis, your personal robot butler"  
     
     return greeting
 
@@ -85,6 +85,119 @@ def upperToCapitalize(txtAct):
         return txtAct
     txtAct = (txtAct.lower()).capitalize()
     return txtAct
+
+def obtain_aliases(file = "res/aliases.txt") -> str:
+    """
+    This function returns every saved command alias.
+    Args:
+        file (str, optional): The file where the aliases are stored. Defaults to "res/aliases.txt".
+
+    Returns:
+        list:dict:str A list of dictionaries where the keys are the aliases and the valus ar the command that the alias points to.
+    """
+    with open(file, "r") as f:
+        lines = f.readlines()
+    returnDictionnary = {}
+    for line in lines:
+        returnDictionnary[line.split("=")[0]] = line.split("=")[1]
+    return returnDictionnary
+
+def save_aliases(aliases, file = "res/aliases.txt") -> str:
+    """
+    This subroutine saves command aliases.
+    Args:
+        aliases (list of dictionnaries): the aliases to be stored
+        file (str, optional): The file where the aliases are to be stored. Defaults to "res/aliases.txt".
+    """
+    with open(file, "w") as f:
+        for k, v in aliases.items():
+            f.write(f"{k}={v}")
+
+def apply_aliases(command, file = "res/aliases.txt") -> str:
+    """
+    This function returns the command passed as an argument with all aliases apllied
+    Args:
+        command (str): The user command to aplly aliases to.
+        file (str, optional): The file in which the alliases are stored. Defaults to "res/aliases.txt".
+    Returns:
+        str: The command with all aliasess apllied
+    """
+    aliases = obtain_aliases()
+    for k, v in aliases.items():
+        command = command.replace(k, v)
+    return command 
+
+def get_setting(setting: str, file = "res/settings.txt") -> str:
+    """
+    This function obtains a specific setting's value from the specified file.
+    Args:
+        setting (str): The seting you are looking for the value of.
+        file (str, optional): Settings file to consult (relative filepath as string required). Defaults to "res/setings.txt".
+
+    Returns:
+        str: The value of the queried setting.
+    """
+    with open(file, "r") as f:
+        settings = f.readlines()
+    for line in settings:
+        if line.split("=")[0] == setting.upper():
+            return line.split("=")[1].strip("\n")
+    return None
+
+def set_background_color(settingsFile = "res/settings.txt") -> str:
+    backgroundColor = "\033[1;32;40m"
+    colorMode = get_setting("COLORMODE", settingsFile)
+    if colorMode == "dark":
+        backgroundColor = "\033[1;32;40m"
+    elif colorMode == "light":
+        backgroundColor = "\033[1;32;255m"
+    elif colorMode == "purple":
+        backgroundColor = "\033[1;32;45m"
+    elif colorMode == "red":
+        backgroundColor = "\033[1;32;41m"
+    elif colorMode == "green":
+        backgroundColor = "\033[1;32;42m"
+    elif colorMode == "blue":
+        backgroundColor = "\033[1;32;44m"
+    return backgroundColor
+
+def execute_user_macro(macroNameAndArgs: str, file = "res/macros.txt"):
+    """
+    This function executes a user-written macro as specified in the passed file.
+    Args:
+        macroName (str): The name of the macro to execute.
+        file (str, optional): The location of the macros file. Defaults to "res/macros.txt".
+
+    Returns:
+        any: The macro's return value if applicable or a string error message
+    """
+    macroName = macroNameAndArgs[0]
+    arguments = macroNameAndArgs[1:]
+    with open(file, "r") as f:
+        text = f.read().split("</MACRO>")
+    macros = {}
+    # This large for loop tries to read the macros.txt file into macro names and arguments and macro code in a single dictionnary.
+    for code in text:
+        currentMacroName =""
+        currentMacroContent = ""
+        nameObtained = False
+        for char in code:
+            if char == ">":
+                nameObtained = True
+            elif char != "<" and not nameObtained:
+                currentMacroName += char
+            elif char != "<":
+                currentMacroContent += char
+        macroHeaders = currentMacroName.strip("\n").split(" ")
+        macros[macroHeaders[0].lower()] = currentMacroContent.strip("\n"), macroHeaders[1:]
+    if macroName in macros.keys():
+        # This is the part that handles passing the arguments to the macro.
+        macroArgs = {}
+        for argumentIndex in range(len(arguments)):
+            macroArgs[macros[macroName][1][argumentIndex]] = arguments[argumentIndex]
+        return exec(macros[macroName][0], macroArgs)
+    else:
+        return "Sorry, I don't seem to remember what this macro is."
 
 # Function to perform language translation
 def translate_text(text, target_language='en'):
@@ -98,7 +211,7 @@ def print_available_languages():
     for code, language in LANGUAGES.items():
         print(f"{code}: {language}")
 
-api_key = '102ebf59c0124b54a9c2e239549bf2a3'
+news_api_key = '102ebf59c0124b54a9c2e239549bf2a3'
 
 def get_latest_news(api_key, country='us', category='general'):
    base_url = "https://newsapi.org/v2/top-headlines"
@@ -119,17 +232,16 @@ def get_latest_news(api_key, country='us', category='general'):
 if __name__ == '__main__':
     # This prints one of the above three greetings before taking user input
     print(greet())
-
+    backgroundColor = set_background_color()
     while not finished:
         while speechRecog:
             with sr.Microphone() as source:
-
                 # Recognisers for speech recognition
                 r1 = sr.Recognizer()
                 r2 = sr.Recognizer()
 
                 # This will prompt user for speech input in green color and not go to the next line
-                print("\n\033[1;32;40mSpeak Command: ", end="")
+                print(f"\n{backgroundColor}Speak Command: ", end="")
 
                 # Try to get speech input from user
                 try:
@@ -142,23 +254,56 @@ if __name__ == '__main__':
 
                 except sr.UnknownValueError:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n\033[1;32;40mSpeech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print(f"\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
                 except sr.RequestError as e:
                     # This will prompt user for text input in green color and not go to the next line
-                    print("\n\033[1;32;40mSpeech not recognised to Type Commands, say 'type' or enter it here: ", end="")
+                    print(f"\n{backgroundColor}Speech not recognised to Type Commands, say 'type' or enter it here: ", end="")
 
         # This is the default setting - typing commands
         # This is for when voice commands are disabled
         while not speechRecog:
             # This will prompt user for text input in green color and not go to the next line
-            print("\n\033[1;32;40mType Command: ", end="")
+            print(f"\n{backgroundColor}Type Command: ", end="")
             # Take input from user in yellow color
             command = input("\033[33m").lower()
-
+            # Apllies aliases
+            command = apply_aliases(command)  
             # ADD POSSIBLE USER COMMANDS HERE
             # GENERAL
-            if "hi" in command or "hey" in command or "hello" in command or "hai" in command:
+            if "dealias" in command or "de-alias" in command:
+                aliases = obtain_aliases()
+                alias = command.split(" ")[1]
+                if alias not in aliases.values():
+                    print("\033[36mThis alias does not exist.")
+                else:
+                    newAliases = {}
+                    for k, v in aliases.items():
+                        if v == alias:
+                            continue
+                        else:
+                            newAliases[k] = v
+                    save_aliases(newAliases)
+                    print("\033[36mAlias removed successfuly.")
+            elif "alias" in command:
+                aliases = obtain_aliases()
+                alias = command.split(" ")[1]
+                aliasing_target = command.split(" ")[-1]
+                if alias in aliases.keys():
+                    print("\033[36mThis word already binds to a command.")
+                else:
+                    aliases[alias] = aliasing_target
+                    save_aliases(aliases)
+                    print("\033[36mAlias apllied.")
+            
+            elif "run" in command:
+                returnValue = f"\033[36m{execute_user_macro(command.split(' ')[1:])}"
+                if returnValue == "\033[36mNone":
+                    print("\033[36mDone with execution.")
+                else:
+                    print(returnValue)
+            
+            elif "hi" in command or "hey" in command or "hello" in command or "hai" in command:
                 print(random.choice(resconst.helloResponse))
 
             elif "how are you" in command or "hows it going" in command or "how's it going" in command or "how r u" in command:
@@ -173,8 +318,12 @@ if __name__ == '__main__':
             # Date and Time
             # Time
             elif "time" in command:
+                format = get_setting("HOUR_FORMAT")
                 time_now = datetime.datetime.now()
-                current_time = time_now.strftime("%H:%M")
+                if format == "12h":
+                    current_time = time_now.strftime("%I:%M %p")
+                else:
+                    current_time = time_now.strftime("%H:%M")
                 print("\033[36mIt's currently", current_time)
 
             # Date
@@ -185,7 +334,7 @@ if __name__ == '__main__':
 
             # News
             elif "news" in command:
-               news = get_latest_news(api_key)
+               news = get_latest_news(news_api_key)
                for article in news:
                    print(article['title'], "-", article['description'])
 
@@ -276,15 +425,15 @@ if __name__ == '__main__':
                     webbrowser.open("https://spotify.com")
                 elif "github" or "gh" in command:
                     webbrowser.open("https://github.com")
-                elif gmail in command:
+                elif "gmail" in command:
                     webbrowser.open("https://mail.google.com/")
-                elif netflix in command:
+                elif "netflix" in command:
                     webbrowser.open("https://netflix.com")
-                elif amazon in command:
+                elif "amazon" in command:
                     webbrowser.open("https://amazon.com")
                 elif "google classroom" or "classroom" in command:
                     webbrowser.open("https://edu.google.com/intl/en-GB/workspace-for-education/classroom/")
-                elif twitter in command:
+                elif "twitter" in command or command.endswith("x") or command.endswith("x."):
                     webbrowser.open("https://twitter.com")
                 else:
                     webbrowser.open("https://" + command[5:])

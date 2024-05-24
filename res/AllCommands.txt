@@ -40,7 +40,7 @@ WEBSITES
     netflix
     amazon
     google classroom
-    twitter
+    twitter/X
     google maps
 ------------------------------------------------------------------------------
 GAME
@@ -65,6 +65,36 @@ TRANSLATE
 ------------------------------------------------------------------------------
 USE SPEECH COMMANDS
 	speak
+------------------------------------------------------------------------------
+ALIAS
+    Replace some text in your commands by some other text!
+    For example: "alias Funny to joke" or "alias WhatsUp as to be understood as news" or even "alias ciao exit".
+
+DEALIAS
+    Remove aliases!
+    Syntaxe is: "dealias aliasTarget"
+    Example use:
+        alias funny joke
+        dealias joke
+------------------------------------------------------------------------------
+MACROS
+    Run some of your own custom code using "run"!
+    For example: "run launch vscode".
+    All macros need to be written in python following a strict syntax.
+    This syntax is as follows:
+        <MACRO_NAME argument1 argument2>
+        The macro's python code
+        </MACRO>
+    Macro names canot conttain spaces
+    You can have as many arguments as you wish
+    Argument names must be in all lowercase and they will always be passed in lowercase: "Argument" will never be passed into a macro since it will be converted into "argument"
+    Example macros respecting the synax are available in "res/ExampleMacros.txt".
+    Example: run saygoodbye marcos
+------------------------------------------------------------------------------
+IMPORTANT NOTES
+    Settings are available in "res/settings.txt".
+    A list of all available settings and their descriptions is available under "res/AllSettings.txt".
+    Aliases can be manualy edited in "res/aliases.txt"
 ------------------------------------------------------------------------------
 EXIT
     bye/abort/exit
