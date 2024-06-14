@@ -356,6 +356,12 @@ if __name__ == '__main__':
                 except:
                     print("An error occurred while collecting system vitals")
 
+            elif "laugh" in command:
+                try:
+                    print("Hahahaha")
+                except:
+                    print("An error occurred while laughing")
+
             # TicTacToe
             elif "tic tac toe" in command or "x and o" in command or "xo" in command or "x n o" in command \
                     or "x and 0" in command or "tictactoe" in command:
